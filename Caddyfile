@@ -1,4 +1,4 @@
-{$DOMAIN:datahamster.online:8080} {
+{$DOMAIN:datahamster.online} {
     @api path /api/*
     handle @api {
         uri strip_prefix /api
