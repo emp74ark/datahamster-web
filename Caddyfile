@@ -1,0 +1,16 @@
+{$DOMAIN:datahamster.online} {
+    @api path /api/*
+    handle @api {
+        uri strip_prefix /api
+        reverse_proxy http://api:3700
+    }
+
+    handle {
+        respond file /app/index.html
+    }
+
+    log {
+        level info
+        format console
+    }
+}
