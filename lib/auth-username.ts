@@ -1,5 +1,7 @@
 'use server';
 
+import { getCookieFromHeaders } from '@/lib/auth-cookies';
+
 const AUTH_URL = new URL(process.env.NEXTAUTH_URL || '');
 
 async function usernameLogin({
@@ -17,6 +19,8 @@ async function usernameLogin({
       },
       body: JSON.stringify({ username, password }),
     });
+
+    await getCookieFromHeaders(response.headers, 'datahamster.sid');
 
     return response.json();
   } catch (e) {
@@ -41,6 +45,8 @@ async function usernameSignup({
       },
       body: JSON.stringify({ username, email, password }),
     });
+
+    await getCookieFromHeaders(response.headers, 'datahamster.sid');
 
     return response.json();
   } catch (e) {
