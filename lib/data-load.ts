@@ -1,10 +1,11 @@
 'use server';
 
 import { setCookieToHeaders } from '@/lib/auth-cookies';
+import { Action, Source } from '@/types/types';
 
 const DATA_URL = new URL(process.env.NEXTDATA_URL || '');
 
-async function loadSources(id?: string) {
+async function loadSources<T extends string>(id?: T) {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
     const url = id
@@ -14,13 +15,16 @@ async function loadSources(id?: string) {
       headers,
       credentials: 'include',
     });
-    return response.json();
+    if (!response.ok) {
+      throw new Error('Failed to fetch sources');
+    }
+    return response.json() as Promise<T extends string ? Source : Source[]>;
   } catch (e) {
     console.error('Error loading sources: ', e);
   }
 }
 
-async function loadActions(id?: string) {
+async function loadActions<T extends string>(id?: T) {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
     const url = id
@@ -30,7 +34,12 @@ async function loadActions(id?: string) {
       headers,
       credentials: 'include',
     });
-    return response.json();
+    if (!response.ok) {
+      throw new Error('Failed to fetch actions');
+    }
+    return response.json() as Promise<
+      T extends string ? Omit<Action, 'events'> : Action[]
+    >;
   } catch (e) {
     console.error('Error loading actions: ', e);
   }
