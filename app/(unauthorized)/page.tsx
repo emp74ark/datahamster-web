@@ -1,11 +1,9 @@
-import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Page() {
   return (
-    <div className='flex flex-col gap-5'>
-      <h1>welcome</h1>
-      <Link href="/auth/login">login</Link>
-      <Link href="/auth/signup">signup</Link>
+    <div className="mx-auto w-fit my-5">
+      <Image src='/hamster-punk.png' alt='Hamster punk' width={500} height={500}/>
     </div>
   );
 }

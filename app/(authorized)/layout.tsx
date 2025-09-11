@@ -21,9 +21,19 @@ export default async function Layout(props: PropsWithChildren<LayoutProps>) {
     redirect('/auth/login');
   }
   return (
-    <div>
-      <NavigationMenu>
+    <>
+      <NavigationMenu viewport={false} className='w-auto mx-auto mb-2'>
         <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/dashboard">Dashboard</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/sources">Sources</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuTrigger>User</NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -36,6 +46,6 @@ export default async function Layout(props: PropsWithChildren<LayoutProps>) {
         </NavigationMenuList>
       </NavigationMenu>
       {props.children}
-    </div>
+    </>
   );
 }
