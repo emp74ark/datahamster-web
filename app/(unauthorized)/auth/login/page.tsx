@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardAction,
@@ -8,20 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
-export default function Home() {
+type PageProps = {};
+
+export default function Page(props: PageProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center flex-col gap-4">
+    <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your username and password below to login to your account
           </CardDescription>
           <CardAction>
-            <Button variant="link">Sign Up</Button>
+            <Button asChild variant="link">
+              <Link href="/auth/signup">Sign Up</Link>
+            </Button>
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -32,13 +37,19 @@ export default function Home() {
                 <Input
                   id="username"
                   type="text"
+                  autoComplete="username"
                   placeholder="username"
                   required
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="password"
+                  required
+                />
               </div>
             </div>
           </form>
