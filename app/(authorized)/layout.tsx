@@ -13,9 +13,7 @@ import {
 import Link from 'next/link';
 import { authOptions } from '@/lib';
 
-type LayoutProps = {};
-
-export default async function Layout(props: PropsWithChildren<LayoutProps>) {
+export default async function Layout({ children }: PropsWithChildren) {
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect('/auth/login');
@@ -45,7 +43,7 @@ export default async function Layout(props: PropsWithChildren<LayoutProps>) {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      {props.children}
+      {children}
     </>
   );
 }
