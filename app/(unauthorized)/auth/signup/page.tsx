@@ -16,8 +16,8 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { signup } from '@/config/username';
 import { signIn } from 'next-auth/react';
+import { usernameSignup } from '@/lib';
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -33,12 +33,18 @@ export default function Page() {
     const password = form.get('password') as string;
     const repeatPassword = form.get('repeat-password') as string;
 
-    if (!username || !email || !password || !repeatPassword || password !== repeatPassword) {
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !repeatPassword ||
+      password !== repeatPassword
+    ) {
       setErrorMessage('Check your inputs');
       return;
     }
 
-    const response = await signup({ username, email, password });
+    const response = await usernameSignup({ username, email, password });
     if (response['message'] && response['error']) {
       setErrorMessage(response.message);
       return;
@@ -53,12 +59,8 @@ export default function Page() {
   }
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={handleSubmit}
-      className="flex min-h-screen items-center justify-center"
-    >
-      <Card className="w-full max-w-sm">
+    <form ref={formRef} onSubmit={handleSubmit}>
+      <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>
           <CardDescription>

@@ -2,7 +2,7 @@
 
 const AUTH_URL = new URL(process.env.NEXTAUTH_URL || '');
 
-async function login({
+async function usernameLogin({
   username,
   password,
 }: {
@@ -24,7 +24,7 @@ async function login({
   }
 }
 
-async function signup({
+async function usernameSignup({
   username,
   email,
   password,
@@ -48,4 +48,4 @@ async function signup({
   }
 }
 
-export { login, signup };
+export { usernameLogin, usernameSignup };

@@ -42,12 +42,8 @@ export default function Page() {
   }
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={handleSubmit}
-      className="flex min-h-screen items-center justify-center"
-    >
-      <Card className="w-full max-w-sm">
+    <form ref={formRef} onSubmit={handleSubmit}>
+      <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>

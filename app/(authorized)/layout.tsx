@@ -1,6 +1,5 @@
 import { PropsWithChildren } from 'react';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/config/auth-options';
 import { redirect } from 'next/navigation';
 import LogoutButton from '@/components/ui/logout-button';
 import {
@@ -12,6 +11,7 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import Link from 'next/link';
+import { authOptions } from '@/lib';
 
 type LayoutProps = {};
 
@@ -22,7 +22,7 @@ export default async function Layout(props: PropsWithChildren<LayoutProps>) {
   }
   return (
     <>
-      <NavigationMenu viewport={false} className='w-auto mx-auto mb-2'>
+      <NavigationMenu viewport={false} className="w-auto mx-auto mb-2">
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>

@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <main className="container mx-auto py-4">
+      <body className="bg-background text-foreground min-h-screen">
+        <main className="container p-4 min-h-screen grid grid-rows-[auto_1fr] gap-4">
           <Providers>{children}</Providers>
         </main>
       </body>
