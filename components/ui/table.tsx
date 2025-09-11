@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { cn } from '@/lib';
 
 type TableProps = {
-  columns: number;
+  columns?: number;
 };
 
 function Table({ children }: PropsWithChildren) {
