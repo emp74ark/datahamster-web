@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardAction,
@@ -11,12 +13,51 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { signup } from '@/config/username';
+import { signIn } from 'next-auth/react';
 
-type PageProps = {};
+export default function Page() {
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const router = useRouter();
 
-export default function Page(props: PageProps) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!formRef.current) return;
+    const form = new FormData(formRef.current);
+    const username = form.get('username') as string;
+    const email = form.get('email') as string;
+    const password = form.get('password') as string;
+    const repeatPassword = form.get('repeat-password') as string;
+
+    if (!username || !email || !password || !repeatPassword || password !== repeatPassword) {
+      setErrorMessage('Check your inputs');
+      return;
+    }
+
+    const response = await signup({ username, email, password });
+    if (response['message'] && response['error']) {
+      setErrorMessage(response.message);
+      return;
+    }
+
+    await signIn('credentials', {
+      username,
+      password,
+      redirect: false,
+    });
+    router.push('/dashboard');
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="flex min-h-screen items-center justify-center"
+    >
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>
@@ -30,48 +71,55 @@ export default function Page(props: PageProps) {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  autoComplete="username"
-                  placeholder="username"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="email"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete="password"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="repeat-password">Repeat password</Label>
-                <Input
-                  id="repeat-password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                />
-              </div>
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                name="username"
+                autoComplete="username"
+                placeholder="username"
+                required
+              />
             </div>
-          </form>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                autoComplete="email"
+                placeholder="email"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                autoComplete="password"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="repeat-password">Repeat password</Label>
+              <Input
+                id="repeat-password"
+                type="password"
+                name="repeat-password"
+                autoComplete="new-password"
+                required
+              />
+            </div>
+            {errorMessage && (
+              <Alert variant="destructive">
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            )}
+          </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <Button type="submit" className="w-full">
@@ -79,6 +127,6 @@ export default function Page(props: PageProps) {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </form>
   );
 }

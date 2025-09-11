@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardAction,
@@ -11,12 +12,41 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
-type PageProps = {};
+export default function Page() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const router = useRouter();
 
-export default function Page(props: PageProps) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    if (!formRef.current) return;
+    e.preventDefault();
+    const formData = new FormData(formRef.current);
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+    if (!username || !password) return;
+    const response = await signIn('credentials', {
+      username,
+      password,
+      redirect: false,
+    });
+    if (response?.error) {
+      setErrorMessage(response.error);
+    } else {
+      router.push('/dashboard');
+    }
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="flex min-h-screen items-center justify-center"
+    >
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -30,29 +60,34 @@ export default function Page(props: PageProps) {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  autoComplete="username"
-                  placeholder="username"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  autoComplete="password"
-                  required
-                />
-              </div>
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                name="username"
+                autoComplete="username"
+                placeholder="username"
+                required
+              />
             </div>
-          </form>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                autoComplete="password"
+                required
+              />
+            </div>
+            {errorMessage && (
+              <Alert variant="destructive">
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            )}
+          </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <Button type="submit" className="w-full">
@@ -60,6 +95,6 @@ export default function Page(props: PageProps) {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </form>
   );
 }

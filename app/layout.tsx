@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: 'App for collecting data',
 };
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <main className="container mx-auto">
+        <main className="container mx-auto py-4">
           <Providers>{children}</Providers>
         </main>
       </body>
