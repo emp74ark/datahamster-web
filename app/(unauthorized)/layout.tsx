@@ -38,9 +38,7 @@ export default async function Layout(props: PropsWithChildren<LayoutProps>) {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className='content-center'>
-        {props.children}
-      </div>
+      <div className="content-center">{props.children}</div>
     </>
   );
 }
