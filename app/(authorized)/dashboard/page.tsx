@@ -1,4 +1,10 @@
+import StatsEvent from '@/components/stats-event';
 
-export default function Page() {
-  return <div>Dashboard</div>;
+export default async function Page() {
+  return (
+    <section>
+      <StatsEvent scope="dashboard" />
+      Dashboard
+    </section>
+  );
 }
