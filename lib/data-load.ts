@@ -28,9 +28,7 @@ async function loadSources<T extends string | undefined>(
 
 async function loadActions<T extends string | undefined>(
   id?: T
-): Promise<
-  T extends string ? Action | undefined : Omit<Action, 'events'>[] | undefined
-> {
+): Promise<T extends string ? Action | undefined : Action[] | undefined> {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
     const url = id

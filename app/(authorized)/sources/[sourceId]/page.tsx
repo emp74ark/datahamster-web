@@ -1,6 +1,5 @@
 import { loadSources } from '@/lib/data-load';
 import PageTitle from '@/components/ui/page-title';
-import { Table, TableHeader, TableRow } from '@/components/ui/table';
 import Link from 'next/link';
 
 type PageProps = {
@@ -10,21 +9,18 @@ type PageProps = {
 export default async function Page(props: PageProps) {
   const { sourceId } = await props.params;
   const source = await loadSources(sourceId);
-  console.log(source);
   return (
-    <section>
+    <>
       <PageTitle>{source?.title}</PageTitle>
       <p className="text-neutral-500 mb-5">{source?.description}</p>
-      <Table>
-        <TableHeader>
-          <span>Name</span>
-        </TableHeader>
+      <h3 className='text-lg'>Actions</h3>
+      <ul className='sticky top-2'>
         {source?.actions?.map(({ id, name }) => (
-          <Link key={id} href={`/sources/${sourceId}/actions/${id}`}>
-            <TableRow>{name}</TableRow>
-          </Link>
+          <li key={id} className="bg-accent w-60 p-2 rounded-sm my-2 hover:bg-accent/80" >
+            <Link href={`/sources/${sourceId}?action=${id}`}>{name}</Link>
+          </li>
         ))}
-      </Table>
-    </section>
+      </ul>
+    </>
   );
 }
