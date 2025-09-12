@@ -10,6 +10,7 @@ type PageProps = {
 export default async function Page(props: PageProps) {
   const { sourceId } = await props.params;
   const source = await loadSources(sourceId);
+  console.log(source);
   return (
     <section>
       <PageTitle>{source?.title}</PageTitle>
