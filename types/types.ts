@@ -1,4 +1,4 @@
-type JSONValue =
+export type JSONValue =
   | string
   | number
   | boolean
@@ -12,7 +12,7 @@ export interface Event {
   id: string;
   localTime: string;
   ip: string;
-  data: JSONValue;
+  data: Record<string, JSONValue>;
   createdAt: string;
 }
 
