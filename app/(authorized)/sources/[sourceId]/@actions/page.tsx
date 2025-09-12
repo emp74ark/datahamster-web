@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import PageTitle from '@/components/ui/page-title';
+import JsonList from '@/components/ui/json-list';
 
 type PageProps = {
   searchParams: Promise<{ action?: string }>;
@@ -41,7 +42,7 @@ export default async function Page(props: PageProps) {
               <TableCell>{ip}</TableCell>
               <TableCell>{new Date(localTime).toLocaleString()}</TableCell>
               <TableCell className="break-after-all">
-                {JSON.stringify(data)}
+                <JsonList data={data} />
               </TableCell>
             </TableRow>
           ))}
