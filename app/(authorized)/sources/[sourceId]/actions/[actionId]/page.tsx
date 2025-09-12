@@ -8,11 +8,10 @@ type PageProps = {
 export default async function Page(props: PageProps) {
   const { actionId } = await props.params;
   const action = await loadActions(actionId);
-  console.log(action);
   return (
     <section>
       <Table>
-        <TableHeader columns={4}>
+        <TableHeader>
           <span>Created</span>
           <span>IP</span>
           <span>Local time</span>
@@ -20,7 +19,7 @@ export default async function Page(props: PageProps) {
         </TableHeader>
       </Table>
       {action?.events?.map(({ id, createdAt, ip, localTime, data }) => (
-        <TableRow key={id} columns={4}>
+        <TableRow key={id}>
           <span>{new Date(createdAt).toLocaleString()}</span>
           <span>{ip}</span>
           <span>{new Date(localTime).toLocaleString()}</span>
