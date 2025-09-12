@@ -1,0 +1,7 @@
+### ADD NEW STATS
+# @no-log
+GET http://localhost:3000/api/stats/add
+    ?id=52f165a3-9c91-409f-97c5-551ade830f3f
+    &timestamp=1756923311850
+
+###

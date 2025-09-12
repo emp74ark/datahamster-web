@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "DataHamster Web",
   "author": "emp74ark",
-  "publishConfig": {
-    "@emp74ark:registry": "https://npm.pkg.github.com"
-  },
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

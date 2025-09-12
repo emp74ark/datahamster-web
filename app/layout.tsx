@@ -12,7 +12,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground min-h-screen">
-        <main className="container p-4 min-h-screen grid grid-rows-[auto_1fr] gap-4">
+        <main className="container p-4 min-h-screen grid grid-rows-[auto_1fr] gap-4  mx-auto">
           <Providers>{children}</Providers>
         </main>
       </body>
