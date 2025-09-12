@@ -1,6 +1,6 @@
 export const statsEvents: Record<string, string> = {
-  startPage: '0fc6aba9-b70d-4c7c-8b81-2757159f8b4b',
-  dashboard: '82b67165-20e4-470a-a641-2b6a947c1220',
+  startPage: '9113f90b-0970-4361-a901-710f84356691',
+  dashboard: '6dfc9788-dbb0-4c0a-9e24-dfc2a2ce30c0',
 };
 
 export async function sendStatsEvent(event: keyof typeof statsEvents) {
