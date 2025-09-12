@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import StatsEvent from '@/components/stats-event';
 
-export default function Page() {
+export default async function Page() {
   return (
     <section className="place-content-center">
+      <StatsEvent scope="startPage" />
       <Image
         src="/hamster-punk.png"
         alt="Hamster punk"

@@ -1,32 +1,38 @@
-import { PropsWithChildren } from 'react';
+import { ComponentProps } from 'react';
 import { cn } from '@/lib';
 
-type TableProps = {
-  columns?: number;
-};
-
-function Table({ children }: PropsWithChildren) {
-  return <div className="w-full rounded-sm overflow-hidden">{children}</div>;
-}
-
-function TableHeader({ children, columns }: PropsWithChildren<TableProps>) {
+function Table({ className, ...props }: ComponentProps<'table'>) {
   return (
-    <div
-      className={cn('grid grid-cols-2 bg-accent p-2', `grid-cols-${columns}`)}
-    >
-      {children}
-    </div>
+    <table
+      className={cn('w-full rounded-sm overflow-hidden', className)}
+      {...props}
+    />
   );
 }
 
-function TableRow({ children, columns }: PropsWithChildren<TableProps>) {
+function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
+  return <tbody className={cn(className)} {...props} />;
+}
+
+function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
+  return <thead className={cn(className, 'bg-neutral-800/80')} {...props} />;
+}
+
+function TableRow({ className, ...props }: ComponentProps<'tr'>) {
   return (
-    <div
-      className={cn('grid grid-cols-2 p-2 border-b-1', `grid-cols-${columns}`)}
-    >
-      {children}
-    </div>
+    <tr
+      className={cn('border-b-1 border-neutral-800 text-sm p-2', className)}
+      {...props}
+    />
   );
 }
 
-export { Table, TableHeader, TableRow };
+function TableHeaderCell({ className, ...props }: ComponentProps<'th'>) {
+  return <th className={cn('p-2', className)} {...props} />;
+}
+
+function TableCell({ className, ...props }: ComponentProps<'td'>) {
+  return <td className={cn('p-2', className)} {...props} />;
+}
+
+export { Table, TableBody, TableHeader, TableRow, TableHeaderCell, TableCell };
