@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table';
 import PageTitle from '@/components/ui/page-title';
 import JsonList from '@/components/ui/json-list';
+import GetIpGeodata from '@/components/ui/get-ip-geodata';
 
 type PageProps = {
   searchParams: Promise<{ action?: string }>;
@@ -40,7 +41,9 @@ export default async function Page(props: PageProps) {
             {action?.events?.map(({ id, createdAt, ip, localTime, data }) => (
               <TableRow key={id}>
                 <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
-                <TableCell>{ip}</TableCell>
+                <TableCell>
+                  <GetIpGeodata ip={ip} />
+                </TableCell>
                 <TableCell>{new Date(localTime).toLocaleString()}</TableCell>
                 <TableCell className="break-after-all">
                   <JsonList data={data} />
