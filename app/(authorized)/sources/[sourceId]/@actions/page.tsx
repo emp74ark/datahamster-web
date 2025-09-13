@@ -28,26 +28,28 @@ export default async function Page(props: PageProps) {
   return (
     <>
       <PageTitle>Events</PageTitle>
-      <Table>
-        <TableHeader>
-          <TableHeaderCell>Created</TableHeaderCell>
-          <TableHeaderCell>IP</TableHeaderCell>
-          <TableHeaderCell>Local time</TableHeaderCell>
-          <TableHeaderCell>Data</TableHeaderCell>
-        </TableHeader>
-        <TableBody>
-          {action?.events?.map(({ id, createdAt, ip, localTime, data }) => (
-            <TableRow key={id}>
-              <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
-              <TableCell>{ip}</TableCell>
-              <TableCell>{new Date(localTime).toLocaleString()}</TableCell>
-              <TableCell className="break-after-all">
-                <JsonList data={data} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div className="h-[85cqh] grid grid-rows-[auto_1fr] overflow-y-scroll">
+        <Table className="h-fit">
+          <TableHeader>
+            <TableHeaderCell>Created</TableHeaderCell>
+            <TableHeaderCell>IP</TableHeaderCell>
+            <TableHeaderCell>Local time</TableHeaderCell>
+            <TableHeaderCell>Data</TableHeaderCell>
+          </TableHeader>
+          <TableBody>
+            {action?.events?.map(({ id, createdAt, ip, localTime, data }) => (
+              <TableRow key={id}>
+                <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
+                <TableCell>{ip}</TableCell>
+                <TableCell>{new Date(localTime).toLocaleString()}</TableCell>
+                <TableCell className="break-after-all">
+                  <JsonList data={data} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }

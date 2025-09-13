@@ -15,13 +15,13 @@ function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
 }
 
 function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
-  return <thead className={cn(className, 'bg-neutral-800/80')} {...props} />;
+  return <thead className={cn(className, 'bg-accent')} {...props} />;
 }
 
 function TableRow({ className, ...props }: ComponentProps<'tr'>) {
   return (
     <tr
-      className={cn('border-b-1 border-neutral-800 text-sm p-2', className)}
+      className={cn('border-b-1 border-accent text-sm p-2', className)}
       {...props}
     />
   );
