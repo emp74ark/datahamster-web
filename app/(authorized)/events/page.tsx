@@ -18,6 +18,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import GetIpGeodata from '@/components/ui/get-ip-geodata';
 
 type PageProps = {
   searchParams: Promise<{ pageNumber: string; perPage: string }>;
@@ -56,7 +57,9 @@ export default async function Page(props: PageProps) {
           {events?.results?.map(({ id, createdAt, ip, localTime, data }) => (
             <TableRow key={id}>
               <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
-              <TableCell>{ip}</TableCell>
+              <TableCell>
+                <GetIpGeodata ip={ip} />
+              </TableCell>
               <TableCell>{new Date(localTime).toLocaleString()}</TableCell>
               <TableCell className="break-after-all">
                 <JsonList data={data} />
