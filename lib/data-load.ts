@@ -1,18 +1,32 @@
 'use server';
 
 import { setCookieToHeaders } from '@/lib/auth-cookies';
-import { Action, Source } from '@/types/types';
+import { Action, FilterParams, Paginated, Source } from '@/types/types';
 
 const DATA_URL = new URL(process.env.NEXTDATA_URL || '');
 
 async function loadSources<T extends string | undefined>(
-  id?: T
-): Promise<T extends string ? Source | undefined : Source[] | undefined> {
+  id?: T,
+  filter?: FilterParams
+): Promise<
+  T extends string ? Source | undefined : Paginated<Source> | undefined
+> {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
-    const url = id
-      ? `${DATA_URL.origin}/source/${id}`
-      : `${DATA_URL.origin}/source`;
+    const queryParams = new URLSearchParams();
+    if (filter) {
+      for (const key in filter) {
+        const value = filter[key];
+        if (!value) continue;
+        queryParams.append(key, value.toString());
+      }
+    }
+    const url = new URL('source', DATA_URL);
+    if (!id) {
+      url.search = queryParams.toString();
+    } else {
+      url.pathname += `/${id}`;
+    }
     const response = await fetch(url, {
       headers,
       credentials: 'include',
@@ -27,14 +41,28 @@ async function loadSources<T extends string | undefined>(
 }
 
 async function loadActions<T extends string | undefined>(
-  id?: T
-): Promise<T extends string ? Action | undefined : Action[] | undefined> {
+  id?: T,
+  filter?: FilterParams
+): Promise<
+  T extends string ? Action | undefined : Paginated<Action> | undefined
+> {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
-    const url = id
-      ? `${DATA_URL.origin}/action/${id}`
-      : `${DATA_URL.origin}/action`;
-    const response = await fetch(url, {
+    const queryParams = new URLSearchParams();
+    if (filter) {
+      for (const key in filter) {
+        const value = filter[key];
+        if (!value) continue;
+        queryParams.append(key, value.toString());
+      }
+    }
+    const url = new URL('action', DATA_URL);
+    if (!id) {
+      url.search = queryParams.toString();
+    } else {
+      url.pathname += `/${id}`;
+    }
+    const response = await fetch(url.href, {
       headers,
       credentials: 'include',
     });

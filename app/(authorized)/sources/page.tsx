@@ -17,7 +17,7 @@ export default async function Page() {
     <section>
       <PageTitle>Sources</PageTitle>
       <div className='flex gap-5'>
-        {sources?.map(({ id, title, description }) => (
+        {sources?.results?.map(({ id, title, description }) => (
           <Card key={id}>
             <CardHeader>
               <CardTitle>{title}</CardTitle>

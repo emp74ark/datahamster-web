@@ -32,3 +32,20 @@ export interface Source {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface FilterParams extends Record<string, string | number | boolean | undefined> {
+  pageNumber: number;
+  perPage: number;
+  sortBy?: string;
+  sortOrder?: SortOrder;
+}
+
+export type Paginated<T> = {
+  total: number;
+  results: T[];
+};
+
+export enum SortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
