@@ -33,6 +33,11 @@ export default async function Layout({ children }: PropsWithChildren) {
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/events">Events</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
             <NavigationMenuTrigger>User</NavigationMenuTrigger>
             <NavigationMenuContent>
               <NavigationMenuLink asChild>

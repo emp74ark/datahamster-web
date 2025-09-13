@@ -1,7 +1,7 @@
 'use server';
 
 import { setCookieToHeaders } from '@/lib/auth-cookies';
-import { Action, FilterParams, Paginated, Source } from '@/types/types';
+import { Action, Event, FilterParams, Paginated, Source } from '@/types/types';
 
 const DATA_URL = new URL(process.env.NEXTDATA_URL || '');
 
@@ -48,21 +48,18 @@ async function loadActions<T extends string | undefined>(
 > {
   try {
     const headers = await setCookieToHeaders('datahamster.sid');
-    const queryParams = new URLSearchParams();
+    const url = new URL('action', DATA_URL);
     if (filter) {
       for (const key in filter) {
         const value = filter[key];
         if (!value) continue;
-        queryParams.append(key, value.toString());
+        url.searchParams.append(key, value.toString());
       }
     }
-    const url = new URL('action', DATA_URL);
-    if (!id) {
-      url.search = queryParams.toString();
-    } else {
+    if (id) {
       url.pathname += `/${id}`;
     }
-    const response = await fetch(url.href, {
+    const response = await fetch(url, {
       headers,
       credentials: 'include',
     });
@@ -75,4 +72,40 @@ async function loadActions<T extends string | undefined>(
   }
 }
 
-export { loadSources, loadActions };
+async function loadEvents<T extends string | undefined>({
+  id,
+  filter,
+}: {
+  id?: T;
+  filter?: FilterParams;
+}): Promise<
+  T extends string ? Event | undefined : Paginated<Event> | undefined
+> {
+  try {
+    const headers = await setCookieToHeaders('datahamster.sid');
+    const url = new URL('event', DATA_URL);
+    if (filter) {
+      for (const key in filter) {
+        const value = filter[key];
+        if (!value) continue;
+        url.searchParams.append(key, value.toString());
+      }
+    }
+    if (id) {
+      url.pathname += `/${id}`;
+    }
+    console.log('URL', url);
+    const response = await fetch(url, {
+      headers,
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch actions');
+    }
+    return response.json();
+  } catch (e) {
+    console.error('Error loading actions: ', e);
+  }
+}
+
+export { loadSources, loadActions, loadEvents };
