@@ -94,7 +94,6 @@ async function loadEvents<T extends string | undefined>({
     if (id) {
       url.pathname += `/${id}`;
     }
-    console.log('URL', url);
     const response = await fetch(url, {
       headers,
       credentials: 'include',
