@@ -1,4 +1,4 @@
-import StatsEvent from '@/components/stats-event';
+import StatsEvent from '@/components/widgets/stats-event';
 
 export default async function Page() {
   return (
