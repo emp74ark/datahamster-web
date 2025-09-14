@@ -11,7 +11,6 @@ type GetIpGeodataProps = {
 
 export default async function GetIpGeodata({ ip }: GetIpGeodataProps) {
   const data = await getIpGeoData(ip);
-  console.log(data);
 
   return (
     <HoverCard>

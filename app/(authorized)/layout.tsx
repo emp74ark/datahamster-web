@@ -34,7 +34,7 @@ export default async function Layout({ children }: PropsWithChildren) {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/events">Events</Link>
+              <Link href="/events?pageNumber=1&pageSize=10">Events</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
