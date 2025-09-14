@@ -1,9 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { usernameSignup } from '@/lib';
-import { signIn } from 'next-auth/react';
+import { useActionState } from 'react';
+import { signupFormHandler } from '@/lib';
 import {
   Card,
   CardAction,
@@ -20,46 +18,13 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function SignupForm() {
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const router = useRouter();
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!formRef.current) return;
-    const form = new FormData(formRef.current);
-    const username = form.get('username') as string;
-    const email = form.get('email') as string;
-    const password = form.get('password') as string;
-    const repeatPassword = form.get('repeat-password') as string;
-
-    if (
-      !username ||
-      !email ||
-      !password ||
-      !repeatPassword ||
-      password !== repeatPassword
-    ) {
-      setErrorMessage('Check your inputs');
-      return;
-    }
-
-    const response = await usernameSignup({ username, email, password });
-    if (response['message'] && response['error']) {
-      setErrorMessage(response.message);
-      return;
-    }
-
-    await signIn('credentials', {
-      username,
-      password,
-      redirect: false,
-    });
-    router.push('/dashboard');
-  }
+  const [formState, signupAction, isPending] = useActionState(
+    signupFormHandler,
+    null
+  );
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form action={signupAction}>
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>
@@ -83,6 +48,7 @@ export default function SignupForm() {
                 autoComplete="username"
                 placeholder="username"
                 required
+                disabled={isPending}
               />
             </div>
             <div className="grid gap-2">
@@ -94,6 +60,7 @@ export default function SignupForm() {
                 autoComplete="email"
                 placeholder="email"
                 required
+                disabled={isPending}
               />
             </div>
             <div className="grid gap-2">
@@ -104,6 +71,7 @@ export default function SignupForm() {
                 name="password"
                 autoComplete="password"
                 required
+                disabled={isPending}
               />
             </div>
             <div className="grid gap-2">
@@ -114,17 +82,18 @@ export default function SignupForm() {
                 name="repeat-password"
                 autoComplete="new-password"
                 required
+                disabled={isPending}
               />
             </div>
-            {errorMessage && (
+            {formState?.success === false && (
               <Alert variant="destructive">
-                <AlertDescription>{errorMessage}</AlertDescription>
+                <AlertDescription>{formState.message}</AlertDescription>
               </Alert>
             )}
           </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Create an account
           </Button>
         </CardFooter>

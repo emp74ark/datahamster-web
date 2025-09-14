@@ -31,4 +31,9 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async redirect() {
+      return '/dashboard';
+    },
+  },
 };
