@@ -1,6 +1,6 @@
 'use server';
 
-import { getCookieFromHeaders } from '@/lib/auth-cookies';
+import { getCookieFromHeaders } from '@/lib';
 
 const AUTH_URL = new URL(process.env.NEXTAUTH_URL || '');
 

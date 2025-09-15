@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
         origin: headers.get('origin') || headers.get('host'),
         userAgent: headers.get('user-agent'),
         languages: headers.get('accept-language'),
-        dataHamster: true,
       },
       ip: headers.get('x-forwarded-for'),
       localTime,
