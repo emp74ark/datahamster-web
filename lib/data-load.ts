@@ -1,6 +1,6 @@
 'use server';
 
-import { setCookieToHeaders } from '@/lib/auth-cookies';
+import { setCookieToHeaders } from '@/lib';
 import { Action, Event, FilterParams, Paginated, Source } from '@/types/types';
 
 const DATA_URL = new URL(process.env.NEXTDATA_URL || '');

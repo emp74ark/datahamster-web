@@ -1,8 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useActionState } from 'react';
 import {
   Card,
   CardAction,
@@ -17,33 +15,16 @@ import Link from 'next/link';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { loginFormHandler } from '@/lib';
 
 export default function LoginForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const router = useRouter();
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    if (!formRef.current) return;
-    e.preventDefault();
-    const formData = new FormData(formRef.current);
-    const username = formData.get('username') as string;
-    const password = formData.get('password') as string;
-    if (!username || !password) return;
-    const response = await signIn('credentials', {
-      username,
-      password,
-      redirect: false,
-    });
-    if (response?.error) {
-      setErrorMessage(response.error);
-    } else {
-      router.push('/dashboard');
-    }
-  }
+  const [formState, loginAction, isPending] = useActionState(
+    loginFormHandler,
+    null
+  );
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form action={loginAction}>
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -67,6 +48,7 @@ export default function LoginForm() {
                 autoComplete="username"
                 placeholder="username"
                 required
+                disabled={isPending}
               />
             </div>
             <div className="grid gap-2">
@@ -77,17 +59,18 @@ export default function LoginForm() {
                 name="password"
                 autoComplete="password"
                 required
+                disabled={isPending}
               />
             </div>
-            {errorMessage && (
+            {formState?.success === false && (
               <Alert variant="destructive">
-                <AlertDescription>{errorMessage}</AlertDescription>
+                <AlertDescription>{formState?.message}</AlertDescription>
               </Alert>
             )}
           </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Login
           </Button>
         </CardFooter>

@@ -1,6 +1,6 @@
 import { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { usernameLogin } from '@/lib/auth-username';
+import { usernameLogin } from '@/lib';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -31,4 +31,11 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+  },
 };
