@@ -1,16 +1,15 @@
-import { loadEvents } from '@/lib/data-load';
+import { getPaginationParams, loadEvents, PaginationParamsType } from '@/lib';
 import PageTitle from '@/components/ui/page-title';
 import EventList from '@/components/widgets/event-list';
 import PaginationBar from '@/components/widgets/pagination-bar';
 
 type PageProps = {
-  searchParams: Promise<{ pageNumber: string; perPage: string }>;
+  searchParams: Promise<PaginationParamsType>;
 };
 
 export default async function Page(props: PageProps) {
-  const searchProps = await props.searchParams;
-  const pageNumber = Number(searchProps.pageNumber) || 1;
-  const perPage = Number(searchProps.perPage) || 10;
+  const searchParams = await props.searchParams;
+  const { pageNumber, perPage } = await getPaginationParams(searchParams);
 
   const events = await loadEvents({
     id: undefined,
