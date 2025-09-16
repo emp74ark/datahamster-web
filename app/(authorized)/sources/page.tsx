@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import SourceForm from '@/components/widgets/source-form';
 import Dialog from '@/components/ui/dialog';
 import PlusEntity from '@/components/ui/plus-entity';
+import DeleteButton from '@/components/ui/delete-button';
 
 export default async function Page() {
   const sources = await loadSources(undefined);
@@ -31,19 +32,22 @@ export default async function Page() {
       </Dialog>
       <div className="grid grid-cols-4 gap-5">
         {sources?.results?.map(({ id, title, description }) => (
-          <Card key={id}>
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-            <CardContent>{description}</CardContent>
-            <CardFooter>
-              <CardAction>
-                <Button asChild variant="outline">
-                  <Link href={`/sources/${id}`}>View</Link>
-                </Button>
-              </CardAction>
-            </CardFooter>
-          </Card>
+          <div key={id} className="relative">
+            <DeleteButton entity="source" id={id} />
+            <Card>
+              <CardHeader>
+                <CardTitle>{title}</CardTitle>
+              </CardHeader>
+              <CardContent>{description}</CardContent>
+              <CardFooter>
+                <CardAction>
+                  <Button asChild variant="outline">
+                    <Link href={`/sources/${id}`}>View</Link>
+                  </Button>
+                </CardAction>
+              </CardFooter>
+            </Card>
+          </div>
         ))}
       </div>
     </section>

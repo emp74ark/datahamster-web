@@ -51,3 +51,17 @@ export async function createAction(
     console.error('Error creating action: ', e);
   }
 }
+
+export async function deleteAction(id: string): Promise<Action | undefined> {
+  try {
+    const headers = await setCookieToHeaders('datahamster.sid');
+    const url = new URL('action', DATA_URL);
+    const response = await fetch(`${url}/${id}`, {
+      method: 'DELETE',
+      headers,
+    });
+    return response.json();
+  } catch (e) {
+    console.error('Error deleting action: ', e);
+  }
+}

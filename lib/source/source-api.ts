@@ -1,7 +1,7 @@
 'use server';
 
 import { DATA_URL, setCookieToHeaders } from '@/lib';
-import { FilterParams, Paginated, Source } from '@/types/types';
+import { Action, FilterParams, Paginated, Source } from '@/types/types';
 
 export async function loadSources<T extends string | undefined>(
   id?: T,
@@ -53,5 +53,19 @@ export async function createSource(
     return response.json();
   } catch (e) {
     console.error('Error creating source: ', e);
+  }
+}
+
+export async function deleteSource(id: string): Promise<Source | undefined> {
+  try {
+    const headers = await setCookieToHeaders('datahamster.sid');
+    const url = new URL('source', DATA_URL);
+    const response = await fetch(`${url}/${id}`, {
+      method: 'DELETE',
+      headers,
+    });
+    return response.json();
+  } catch (e) {
+    console.error('Error deleting source: ', e);
   }
 }

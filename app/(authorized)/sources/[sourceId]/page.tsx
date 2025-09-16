@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PlusEntity from '@/components/ui/plus-entity';
 import Dialog from '@/components/ui/dialog';
 import ActionForm from '@/components/widgets/action-form';
+import DeleteButton from '@/components/ui/delete-button';
 
 type PageProps = {
   params: Promise<{ sourceId: string }>;
@@ -31,8 +32,9 @@ export default async function Page(props: PageProps) {
         {source?.actions?.map(({ id, name, publicId }) => (
           <li
             key={id}
-            className="bg-accent p-2 rounded-sm my-2 hover:bg-accent/80"
+            className="bg-accent p-2 rounded-sm my-2 hover:bg-accent/80 relative"
           >
+            <DeleteButton entity='action' id={id}/>
             <Link className='text-lg' href={`/sources/${sourceId}?action=${id}`}>
               {name}
               <p className='text-xs text-neutral-500/50'>Public ID:</p>
