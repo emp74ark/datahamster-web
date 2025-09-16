@@ -1,15 +1,16 @@
 import { signIn } from 'next-auth/react';
-import { usernameSignup } from '@/lib';
 import {
   LoginFormSchema,
   SignupFormSchema,
   SignupFormSchemaType,
-} from '@/lib/auth/auth-validate';
+  usernameSignup,
+} from '@/lib';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+import { FormActionState } from '@/types/types';
 
 export async function loginFormHandler(
-  state: { success: boolean; message: string } | null,
+  state: FormActionState | null,
   formData: FormData
 ) {
   const validate = await LoginFormSchema.safeParseAsync({
@@ -38,7 +39,7 @@ export async function loginFormHandler(
 }
 
 export async function signupFormHandler(
-  state: { success: boolean; message: string } | null,
+  state: FormActionState | null,
   formData: FormData
 ) {
   const validate = await SignupFormSchema.safeParseAsync({
@@ -47,6 +48,8 @@ export async function signupFormHandler(
     password: formData.get('password'),
     repeatPassword: formData.get('repeat-password'),
   });
+
+  console.log('VALIDATE', validate);
 
   if (validate.error) {
     const pretty = z.prettifyError(validate.error);

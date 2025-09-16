@@ -1,4 +1,4 @@
-import { loadSources } from '@/lib/data-load';
+import { loadSources } from '@/lib';
 import PageTitle from '@/components/ui/page-title';
 import Link from 'next/link';
 import {
@@ -10,13 +10,26 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import SourceForm from '@/components/widgets/source-form';
+import Dialog from '@/components/ui/dialog';
+import PlusEntity from '@/components/ui/plus-entity';
 
 export default async function Page() {
   const sources = await loadSources(undefined);
   return (
     <section>
       <PageTitle>Sources</PageTitle>
-      <div className='flex gap-5'>
+      <Dialog
+        trigger={
+          <PlusEntity
+            description="Add new source"
+            className="absolute bottom-5 right-5"
+          />
+        }
+      >
+        <SourceForm />
+      </Dialog>
+      <div className="grid grid-cols-4 gap-5">
         {sources?.results?.map(({ id, title, description }) => (
           <Card key={id}>
             <CardHeader>

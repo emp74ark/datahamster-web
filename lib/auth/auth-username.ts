@@ -1,8 +1,6 @@
 'use server';
 
-import { getCookieFromHeaders } from '@/lib';
-
-const AUTH_URL = new URL(process.env.NEXTAUTH_URL || '');
+import { AUTH_URL, DEFAULT_HEADERS, getCookieFromHeaders } from '@/lib';
 
 async function usernameLogin({
   username,
@@ -12,11 +10,10 @@ async function usernameLogin({
   password: string;
 }) {
   try {
-    const response = await fetch(`${AUTH_URL.href}/login`, {
+    const url = new URL('/login', AUTH_URL);
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: DEFAULT_HEADERS,
       body: JSON.stringify({ username, password }),
     });
 
@@ -38,11 +35,10 @@ async function usernameSignup({
   password: string;
 }) {
   try {
-    const response = await fetch(`${AUTH_URL.href}/signup`, {
+    const url = new URL('/signup', AUTH_URL);
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: DEFAULT_HEADERS,
       body: JSON.stringify({ username, email, password }),
     });
 
