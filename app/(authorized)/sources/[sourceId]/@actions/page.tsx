@@ -1,4 +1,4 @@
-import { loadActions } from '@/lib/data-load';
+import { loadActions } from '@/lib';
 import PageTitle from '@/components/ui/page-title';
 import EventList from '@/components/widgets/event-list';
 

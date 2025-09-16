@@ -16,10 +16,16 @@ export interface Event {
   createdAt: string;
 }
 
+export interface ActioDto {
+  sourceId: string;
+  name: string;
+}
+
 export interface Action {
   id: string;
   name: string;
   events: Event[];
+  publicId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -33,7 +39,8 @@ export interface Source {
   updatedAt: string;
 }
 
-export interface FilterParams extends Record<string, string | number | boolean | undefined> {
+export interface FilterParams
+  extends Record<string, string | number | boolean | undefined> {
   pageNumber: number;
   perPage: number;
   sortBy?: string;
@@ -49,3 +56,5 @@ export enum SortOrder {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+
+export type FormActionState = { success: boolean; message: string };

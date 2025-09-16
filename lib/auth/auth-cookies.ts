@@ -44,5 +44,6 @@ export async function setCookieToHeaders(cookieName: string) {
   if (!cookie) return;
   const headers = new Headers();
   headers.append('Cookie', `${cookieName}=${cookie}`);
+  headers.append('Content-Type', 'application/json');
   return headers;
 }
