@@ -34,11 +34,14 @@ export default async function Page(props: PageProps) {
             key={id}
             className="bg-accent p-2 rounded-sm my-2 hover:bg-accent/80 relative"
           >
-            <DeleteButton entity='action' id={id}/>
-            <Link className='text-lg' href={`/sources/${sourceId}?action=${id}`}>
+            <DeleteButton entity="action" id={id} />
+            <Link
+              className="text-lg"
+              href={`/sources/${sourceId}?action=${id}`}
+            >
               {name}
-              <p className='text-xs text-neutral-500/50'>Public ID:</p>
-              <p className='text-xs text-neutral-500/50'>{publicId}</p>
+              <p className="text-xs text-neutral-500/50">Public ID:</p>
+              <p className="text-xs text-neutral-500/50">{publicId}</p>
             </Link>
           </li>
         ))}

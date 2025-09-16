@@ -1,7 +1,7 @@
 'use server';
 
 import { DATA_URL, setCookieToHeaders } from '@/lib';
-import { Action, FilterParams, Paginated, Source } from '@/types/types';
+import { FilterParams, Paginated, Source } from '@/types/types';
 
 export async function loadSources<T extends string | undefined>(
   id?: T,
