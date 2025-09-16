@@ -10,7 +10,7 @@ async function usernameLogin({
   password: string;
 }) {
   try {
-    const url = new URL('/login', AUTH_URL);
+    const url = new URL('/auth/login', AUTH_URL);
     const response = await fetch(url, {
       method: 'POST',
       headers: DEFAULT_HEADERS,
@@ -35,7 +35,7 @@ async function usernameSignup({
   password: string;
 }) {
   try {
-    const url = new URL('/signup', AUTH_URL);
+    const url = new URL('/auth/signup', AUTH_URL);
     const response = await fetch(url, {
       method: 'POST',
       headers: DEFAULT_HEADERS,
