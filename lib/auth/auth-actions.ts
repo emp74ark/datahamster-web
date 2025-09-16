@@ -49,8 +49,6 @@ export async function signupFormHandler(
     repeatPassword: formData.get('repeat-password'),
   });
 
-  console.log('VALIDATE', validate);
-
   if (validate.error) {
     const pretty = z.prettifyError(validate.error);
     return {
