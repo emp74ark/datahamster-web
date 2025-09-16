@@ -11,13 +11,14 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useActionState } from 'react';
 import { actionFormAction } from '@/lib';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type ActionFormProps = {
   sourceId: string;
 };
 
 export default function ActionForm({ sourceId }: ActionFormProps) {
-  const [state, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     actionFormAction.bind(null, sourceId),
     null
   );
@@ -33,6 +34,11 @@ export default function ActionForm({ sourceId }: ActionFormProps) {
               <Label htmlFor="name">Title</Label>
               <Input id="name" type="text" name="name" disabled={isPending} />
             </div>
+            {formState?.success === false && (
+              <Alert variant="destructive">
+                <AlertDescription>{formState?.message}</AlertDescription>
+              </Alert>
+            )}
           </div>
         </CardContent>
         <CardFooter>

@@ -12,9 +12,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useActionState } from 'react';
 import { createSourceAction } from '@/lib';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function SourceForm() {
-  const [formSate, formAction, isPending] = useActionState(
+  const [formState, formAction, isPending] = useActionState(
     createSourceAction,
     null
   );
@@ -38,6 +39,11 @@ export default function SourceForm() {
                 disabled={isPending}
               />
             </div>
+            {formState?.success === false && (
+              <Alert variant="destructive">
+                <AlertDescription>{formState?.message}</AlertDescription>
+              </Alert>
+            )}
           </div>
         </CardContent>
         <CardFooter>
