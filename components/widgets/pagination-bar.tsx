@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import PaginationSelect from '@/components/widgets/pagination-select';
 
 type PaginationBarProps = {
   entityPrefix: string;
@@ -53,6 +54,7 @@ export default function PaginationBar({
             </PaginationLink>
           </PaginationItem>
         ))}
+        <PaginationSelect perPage={perPage}/>
         {pages > VISIBLE_PAGES && (
           <PaginationItem>
             <PaginationEllipsis />
