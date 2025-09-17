@@ -11,7 +11,7 @@ export default function Layout({ children, actions }: ActionLayoutProps) {
     <section className="@container flex flex-col md:flex-row gap-5 w-full">
       <div className="bg-accent/50 px-4 py-5 rounded-md md:w-1/3">{children}</div>
       <Suspense fallback={<Loading />}>
-        <div className="w-full">{actions}</div>
+        <div className="w-full grid grid-rows-[auto_1fr]">{actions}</div>
       </Suspense>
     </section>
   );

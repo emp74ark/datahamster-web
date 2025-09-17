@@ -24,7 +24,7 @@ const authNavLinks: { title: string; href: string }[] = [
   },
   {
     title: 'Events',
-    href: '/events?pageNumber=1&perPage=10',
+    href: '/events',
   },
 ];
 
