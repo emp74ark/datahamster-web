@@ -1,6 +1,11 @@
 'use server';
 
-import { AUTH_URL, DEFAULT_HEADERS, getCookieFromHeaders } from '@/lib';
+import {
+  AUTH_URL,
+  COOKIE_NAME,
+  DEFAULT_HEADERS,
+  getCookieFromHeaders,
+} from '@/lib';
 
 async function usernameLogin({
   username,
@@ -17,7 +22,7 @@ async function usernameLogin({
       body: JSON.stringify({ username, password }),
     });
 
-    await getCookieFromHeaders(response.headers, 'datahamster.sid');
+    await getCookieFromHeaders(response.headers, COOKIE_NAME);
 
     return response.json();
   } catch (e) {
@@ -42,7 +47,7 @@ async function usernameSignup({
       body: JSON.stringify({ username, email, password }),
     });
 
-    await getCookieFromHeaders(response.headers, 'datahamster.sid');
+    await getCookieFromHeaders(response.headers, COOKIE_NAME);
 
     return response.json();
   } catch (e) {

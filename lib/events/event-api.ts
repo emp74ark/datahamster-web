@@ -1,17 +1,17 @@
 import { Event, FilterParams, Paginated } from '@/types/types';
-import { DATA_URL, setCookieToHeaders } from '@/lib';
+import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
 
 export async function loadEvents<T extends string | undefined>({
   id,
   filter,
 }: {
   id?: T;
-  filter?: FilterParams;
+  filter?: FilterParams & { actionId?: string };
 }): Promise<
   T extends string ? Event | undefined : Paginated<Event> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('event', DATA_URL);
     if (filter) {
       for (const key in filter) {
