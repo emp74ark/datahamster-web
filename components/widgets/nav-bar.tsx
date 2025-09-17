@@ -45,7 +45,7 @@ const unAuthNavLinks: { title: string; href: string }[] = [
 
 export default function NavBar({ authorized }: NavBarProps) {
   return (
-    <NavigationMenu viewport={false} className="w-auto mx-auto mb-2">
+    <NavigationMenu viewport={false}>
       <NavigationMenuList>
         {(authorized ? authNavLinks : unAuthNavLinks).map(({ title, href }) => (
           <NavigationMenuItem key={title}>
