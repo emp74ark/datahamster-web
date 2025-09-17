@@ -20,7 +20,7 @@ export default async function Page(props: PageProps) {
         trigger={
           <PlusEntity
             description="Add new action"
-            className="absolute bottom-5 right-5"
+            className="fixed bottom-5 right-5 z-10"
           />
         }
       >
@@ -28,7 +28,7 @@ export default async function Page(props: PageProps) {
       </Dialog>
       <p className="text-neutral-500 mb-5">{source?.description}</p>
       <h3 className="text-lg">Actions</h3>
-      <ul className="sticky top-2">
+      <ul className="sticky top-2 flex flex-row gap-3 md:flex-col">
         {source?.actions?.map(({ id, name, publicId }) => (
           <li
             key={id}

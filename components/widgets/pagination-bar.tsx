@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Pagination,
   PaginationContent,
@@ -7,9 +9,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import PaginationSelect from '@/components/widgets/pagination-select';
+import { useSearchParams } from 'next/navigation';
 
 type PaginationBarProps = {
-  entityPrefix: string;
   current: number;
   perPage: number;
   totalResults?: number;
@@ -18,11 +21,11 @@ type PaginationBarProps = {
 const VISIBLE_PAGES = 3;
 
 export default function PaginationBar({
-  entityPrefix,
   current,
   perPage,
   totalResults = 0,
 }: PaginationBarProps) {
+  const searchParams = useSearchParams();
   const pages = Math.ceil(totalResults / perPage);
 
   const visiblePageNumbers = Array.from(
@@ -33,26 +36,32 @@ export default function PaginationBar({
     current + (pages > VISIBLE_PAGES ? VISIBLE_PAGES : pages)
   );
 
+  function genPageLink(target: number) {
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set('pageNumber', target.toString());
+    currentParams.set('perPage', perPage.toString());
+    return `?${currentParams.toString()}`;
+  }
+
   return (
     <Pagination className="mt-5 place-self-end">
       <PaginationContent>
         {current > 1 && (
           <PaginationItem>
-            <PaginationPrevious
-              href={`${entityPrefix}?pageNumber=${current - 1}&perPage=${perPage}`}
-            />
+            <PaginationPrevious href={genPageLink(current - 1)} />
           </PaginationItem>
         )}
         {visiblePageNumbers.map((pageNumber) => (
           <PaginationItem key={pageNumber}>
             <PaginationLink
               isActive={current === pageNumber}
-              href={`${entityPrefix}?pageNumber=${pageNumber}&perPage=${perPage}`}
+              href={genPageLink(pageNumber)}
             >
               {pageNumber}
             </PaginationLink>
           </PaginationItem>
         ))}
+        <PaginationSelect perPage={perPage} />
         {pages > VISIBLE_PAGES && (
           <PaginationItem>
             <PaginationEllipsis />
@@ -60,9 +69,7 @@ export default function PaginationBar({
         )}
         {current < pages && (
           <PaginationItem>
-            <PaginationNext
-              href={`${entityPrefix}?pageNumber=${current + 1}&perPage=${perPage}`}
-            />
+            <PaginationNext href={genPageLink(current + 1)} />
           </PaginationItem>
         )}
       </PaginationContent>

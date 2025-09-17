@@ -1,6 +1,6 @@
 'use server';
 
-import { DATA_URL, setCookieToHeaders } from '@/lib';
+import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
 import { FilterParams, Paginated, Source } from '@/types/types';
 
 export async function loadSources<T extends string | undefined>(
@@ -10,7 +10,7 @@ export async function loadSources<T extends string | undefined>(
   T extends string ? Source | undefined : Paginated<Source> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const queryParams = new URLSearchParams();
     if (filter) {
       for (const key in filter) {
@@ -42,7 +42,7 @@ export async function createSource(
   data: Pick<Source, 'title' | 'description'>
 ): Promise<Source | undefined> {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('source', DATA_URL);
     const response = await fetch(url, {
       method: 'POST',
@@ -58,7 +58,7 @@ export async function createSource(
 
 export async function deleteSource(id: string): Promise<Source | undefined> {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('source', DATA_URL);
     const response = await fetch(`${url}/${id}`, {
       method: 'DELETE',

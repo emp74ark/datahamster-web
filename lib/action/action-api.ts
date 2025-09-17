@@ -1,7 +1,7 @@
 'use server';
 
 import { ActioDto, Action, FilterParams, Paginated } from '@/types/types';
-import { DATA_URL, setCookieToHeaders } from '@/lib';
+import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
 
 export async function loadActions<T extends string | undefined>(
   id?: T,
@@ -10,7 +10,7 @@ export async function loadActions<T extends string | undefined>(
   T extends string ? Action | undefined : Paginated<Action> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('action', DATA_URL);
     if (filter) {
       for (const key in filter) {
@@ -39,7 +39,7 @@ export async function createAction(
   data: ActioDto
 ): Promise<Action | undefined> {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('action', DATA_URL);
     const response = await fetch(url, {
       method: 'POST',
@@ -54,7 +54,7 @@ export async function createAction(
 
 export async function deleteAction(id: string): Promise<Action | undefined> {
   try {
-    const headers = await setCookieToHeaders('datahamster.sid');
+    const headers = await setCookieToHeaders(COOKIE_NAME);
     const url = new URL('action', DATA_URL);
     const response = await fetch(`${url}/${id}`, {
       method: 'DELETE',

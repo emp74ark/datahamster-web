@@ -21,10 +21,9 @@ export default async function Page(props: PageProps) {
 
   return (
     <section className="grid grid-rows-[auto_1fr]">
-      <PageTitle>Events</PageTitle>
+      <PageTitle>Latest Events</PageTitle>
       <EventList events={events?.results} />
       <PaginationBar
-        entityPrefix="events"
         current={pageNumber}
         perPage={perPage}
         totalResults={events?.total}
