@@ -2,6 +2,9 @@
 
 import { SVGProps } from 'react';
 import { deleteAction, deleteSource } from '@/lib';
+import Dialog from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 
 function TrashIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -42,11 +45,26 @@ export default function DeleteButton({ entity, id }: DeleteButtonProps) {
   }
 
   return (
-    <TrashIcon
-      width="1.5em"
-      height="1.5em"
-      className="text-red-400/70 hover:text-red-500 cursor-pointer absolute right-2 top-2 bg-accent rounded-full p-1"
-      onClick={deleteHandler}
-    />
+    <Dialog
+      trigger={
+        <TrashIcon
+          width="1.5em"
+          height="1.5em"
+          className="text-red-400/70 hover:text-red-500 cursor-pointer absolute right-2 top-2 bg-accent rounded-full p-1"
+        />
+      }
+    >
+      <Card className="w-full max-w-sm mx-auto">
+        <CardTitle />
+        <CardContent>
+          <p>Are you sure you want to delete this {entity}?</p>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <Button variant="destructive" onClick={deleteHandler}>
+            Yes, let&apos;s do it!
+          </Button>
+        </CardFooter>
+      </Card>
+    </Dialog>
   );
 }
