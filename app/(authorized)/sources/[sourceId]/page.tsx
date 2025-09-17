@@ -20,7 +20,7 @@ export default async function Page(props: PageProps) {
         trigger={
           <PlusEntity
             description="Add new action"
-            className="absolute bottom-5 right-5"
+            className="fixed bottom-5 right-5 z-10"
           />
         }
       >

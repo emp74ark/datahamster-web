@@ -24,13 +24,13 @@ export default async function Page() {
         trigger={
           <PlusEntity
             description="Add new source"
-            className="absolute bottom-5 right-5"
+            className="fixed bottom-5 right-5 z-10"
           />
         }
       >
         <SourceForm />
       </Dialog>
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {sources?.results?.map(({ id, title, description }) => (
           <div key={id} className="relative">
             <DeleteButton entity="source" id={id} />
