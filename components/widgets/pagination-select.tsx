@@ -17,6 +17,7 @@ export default function PaginationSelect({ perPage }: PaginationSelectProps) {
     const value = event.target.value;
     const currentParams = new URLSearchParams(searchParams.toString());
     currentParams.set('perPage', value);
+    currentParams.set('pageNumber', '1');
     router.push(`?${currentParams.toString()}`);
   }
 
