@@ -33,5 +33,12 @@ export async function GET(req: NextRequest) {
   } catch (e) {
     console.error('Error adding event: ', e);
   }
-  return NextResponse.json({ message: 'Ok' });
+  return new Response('ok', {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    }
+  })
 }
