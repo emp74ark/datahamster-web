@@ -1,6 +1,6 @@
 'use server';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 const DATA_URL = new URL(process.env.NEXTDATA_URL || '');
 
@@ -39,6 +39,6 @@ export async function GET(req: NextRequest) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': '*',
-    }
-  })
+    },
+  });
 }
