@@ -38,9 +38,15 @@ export async function getCookieFromHeaders(
   });
 }
 
-export async function setCookieToHeaders(cookieName: string) {
+export async function getCookie(cookieName: string) {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get(cookieName)?.value;
+  return cookieStore.get(cookieName)?.value;
+}
+
+export async function setCookieToHeaders(
+  cookieName: string,
+) {
+  const cookie = await getCookie(cookieName);
   if (!cookie) return;
   const headers = new Headers();
   headers.append('Cookie', `${cookieName}=${cookie}`);
