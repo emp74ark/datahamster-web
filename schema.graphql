@@ -5,22 +5,34 @@
 type Action {
   actions: [Action!]!
 
-  """Action creation date"""
+  """
+  Action creation date
+  """
   createdAt: DateTime!
 
-  """Action events"""
+  """
+  Action events
+  """
   events: [Event!]
 
-  """Action ID"""
+  """
+  Action ID
+  """
   id: String!
 
-  """Action name"""
+  """
+  Action name
+  """
   name: String!
 
-  """Public action ID"""
+  """
+  Public action ID
+  """
   publicId: String!
 
-  """Action update date"""
+  """
+  Action update date
+  """
   updatedAt: DateTime!
 }
 
@@ -30,20 +42,30 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Event {
-  """Event creation date"""
+  """
+  Event creation date
+  """
   createdAt: DateTime!
 
-  """Event data"""
+  """
+  Event data
+  """
   data: JSONObject
   events: [Event!]!
 
-  """Event ID"""
+  """
+  Event ID
+  """
   id: String!
 
-  """Event IP"""
+  """
+  Event IP
+  """
   ip: String!
 
-  """Event timestamp"""
+  """
+  Event timestamp
+  """
   localTime: DateTime!
 }
 
@@ -68,45 +90,65 @@ type PaginatedSources {
 }
 
 input PaginationInput {
-  """Page number"""
+  """
+  Page number
+  """
   pageNumber: Int
 
-  """Items per page"""
+  """
+  Items per page
+  """
   perPage: Int
 
-  """Field to sort by"""
+  """
+  Field to sort by
+  """
   sortBy: String
 
-  """Order: `ASC` or `DESC`"""
+  """
+  Order: `ASC` or `DESC`
+  """
   sortOrder: String
 }
 
 type Query {
   action(id: String!): Action!
-  actions(pagination: PaginationInput!): PaginatedActions!
+  actions(pagination: PaginationInput!, sourceId: String): PaginatedActions!
   event(id: String!): Event!
-  events(pagination: PaginationInput!): PaginatedEvents!
+  events(actionId: String, pagination: PaginationInput!): PaginatedEvents!
   health: String!
   source(id: String!): Source!
   sources(pagination: PaginationInput!): PaginatedSources!
 }
 
 type Source {
-  """Source actions"""
+  """
+  Source actions
+  """
   actions: [Action!]
 
-  """Source creation date"""
+  """
+  Source creation date
+  """
   createdAt: DateTime!
 
-  """Source description"""
+  """
+  Source description
+  """
   description: String!
 
-  """Source ID"""
+  """
+  Source ID
+  """
   id: String!
 
-  """Source title"""
+  """
+  Source title
+  """
   title: String!
 
-  """Source update date"""
+  """
+  Source update date
+  """
   updatedAt: DateTime!
 }

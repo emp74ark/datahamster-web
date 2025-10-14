@@ -22,5 +22,10 @@ const authLink = new SetContextLink(async ({ headers }) => {
 export const graphqlClient = new ApolloClient({
   link: authLink.concat(gqlLink),
   cache: new InMemoryCache(),
-  ssrMode: true,
+  ssrMode: false,
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache',
+    },
+  },
 });

@@ -1,5 +1,6 @@
 import { Event, FilterParams, Paginated } from '@/types/types';
-import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
+import { graphqlClient } from '@/lib/graphql-client';
+import { gql } from '@apollo/client';
 
 export async function loadEvents<T extends string | undefined>({
   id,
@@ -11,27 +12,43 @@ export async function loadEvents<T extends string | undefined>({
   T extends string ? Event | undefined : Paginated<Event> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders(COOKIE_NAME);
-    const url = new URL('event', DATA_URL);
-    if (filter) {
-      for (const key in filter) {
-        const value = filter[key];
-        if (!value) continue;
-        url.searchParams.append(key, value.toString());
-      }
-    }
     if (id) {
-      url.pathname += `/${id}`;
+      const { data } = await graphqlClient.query<{ event: Event }>({
+        query: gql`
+          query Event($id: String!) {
+            event(id: $id) {
+              id
+              ip
+              localTime
+              createdAt
+            }
+          }
+        `,
+        variables: { id },
+      });
+      return data?.event as T extends string ? Event : never;
     }
-    const response = await fetch(url, {
-      headers,
-      credentials: 'include',
+
+    const { actionId, ...pagination } = filter || {};
+    const { data } = await graphqlClient.query<{ events: Paginated<Event> }>({
+      query: gql`
+        query Events($actionId: String, $pagination: PaginationInput!) {
+          events(actionId: $actionId, pagination: $pagination) {
+            total
+            results {
+              id
+              ip
+              localTime
+              createdAt
+              data
+            }
+          }
+        }
+      `,
+      variables: { pagination, actionId },
     });
-    if (!response.ok) {
-      throw new Error('Failed to fetch actions');
-    }
-    return response.json();
+    return data?.events as T extends string ? never : Paginated<Event>;
   } catch (e) {
-    console.error('Error loading actions: ', e);
+    console.error('Error loading action(s): ', e);
   }
 }
