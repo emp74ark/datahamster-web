@@ -2,34 +2,48 @@
 
 import { ActioDto, Action, FilterParams, Paginated } from '@/types/types';
 import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
+import { graphqlClient } from '@/lib/graphql-client';
+import { gql } from '@apollo/client';
 
 export async function loadActions<T extends string | undefined>(
   id?: T,
+  sourceId?: string,
   filter?: FilterParams
 ): Promise<
   T extends string ? Action | undefined : Paginated<Action> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders(COOKIE_NAME);
-    const url = new URL('action', DATA_URL);
-    if (filter) {
-      for (const key in filter) {
-        const value = filter[key];
-        if (!value) continue;
-        url.searchParams.append(key, value.toString());
-      }
-    }
     if (id) {
-      url.pathname += `/${id}`;
+      const { data } = await graphqlClient.query<{ action: Action }>({
+        query: gql`
+          query Action($id: String!) {
+            action(id: $id) {
+              id
+              publicId
+              name
+            }
+          }
+        `,
+        variables: { id },
+      });
+      return data?.action as T extends string ? Action : never;
     }
-    const response = await fetch(url, {
-      headers,
-      credentials: 'include',
+
+    const { data } = await graphqlClient.query<{ actions: Paginated<Action> }>({
+      query: gql`
+        query Actions($sourceId: String, $pagination: PaginationInput!) {
+          actions(pagination: $pagination, sourceId: $sourceId) {
+            total
+            results {
+              id
+              name
+            }
+          }
+        }
+      `,
+      variables: { sourceId, pagination: filter },
     });
-    if (!response.ok) {
-      throw new Error('Failed to fetch actions');
-    }
-    return response.json();
+    return data?.actions as T extends string ? never : Paginated<Action>;
   } catch (e) {
     console.error('Error loading actions: ', e);
   }

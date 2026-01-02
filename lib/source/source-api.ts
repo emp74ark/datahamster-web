@@ -2,6 +2,8 @@
 
 import { COOKIE_NAME, DATA_URL, setCookieToHeaders } from '@/lib';
 import { FilterParams, Paginated, Source } from '@/types/types';
+import { graphqlClient } from '@/lib/graphql-client';
+import { gql } from '@apollo/client';
 
 export async function loadSources<T extends string | undefined>(
   id?: T,
@@ -10,31 +12,47 @@ export async function loadSources<T extends string | undefined>(
   T extends string ? Source | undefined : Paginated<Source> | undefined
 > {
   try {
-    const headers = await setCookieToHeaders(COOKIE_NAME);
-    const queryParams = new URLSearchParams();
-    if (filter) {
-      for (const key in filter) {
-        const value = filter[key];
-        if (!value) continue;
-        queryParams.append(key, value.toString());
-      }
+    if (id) {
+      const { data } = await graphqlClient.query<{ source: Source }>({
+        query: gql`
+          query Source($id: String!) {
+            source(id: $id) {
+              id
+              title
+              description
+              actions {
+                id
+                publicId
+                name
+              }
+            }
+          }
+        `,
+        variables: { id },
+      });
+      return data?.source as T extends string ? Source : never;
     }
-    const url = new URL('source', DATA_URL);
-    if (!id) {
-      url.search = queryParams.toString();
-    } else {
-      url.pathname += `/${id}`;
-    }
-    const response = await fetch(url, {
-      headers,
-      credentials: 'include',
+
+    const { data } = await graphqlClient.query<{ sources: Paginated<Source> }>({
+      query: gql`
+        query Sources($pagination: PaginationInput!) {
+          sources(pagination: $pagination) {
+            total
+            results {
+              id
+              title
+              description
+            }
+          }
+        }
+      `,
+      variables: {
+        pagination: filter || {},
+      },
     });
-    if (!response.ok) {
-      throw new Error('Failed to fetch sources');
-    }
-    return response.json();
+    return data?.sources as T extends string ? never : Paginated<Source>;
   } catch (e) {
-    console.error('Error loading sources: ', e);
+    console.error('Error loading source(s): ', e);
   }
 }
 
